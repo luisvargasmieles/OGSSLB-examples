@@ -144,7 +144,7 @@ for (i in seq_len(nrow(Y))) {
 
 # list of seeds to set different initial conditions on each
 # SSLB/OGSSLB replicates
-list_seeds <- seq(20, 100, 20)
+list_seeds <- seq(20, 1000, 20)
 
 # Set up parallel processing
 cl <- makeCluster(round(detectCores() / 2))
