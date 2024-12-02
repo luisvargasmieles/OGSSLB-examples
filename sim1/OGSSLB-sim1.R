@@ -17,15 +17,15 @@ source("../OGSSLB-functions.R")
 # VARIABLES FOR EXPERIMENT ----
 
 # Number of samples
-n <- 100
+n <- 300
 # Number of genes
-g <- 300
+g <- 1000
 
 # number of real biclusters to evaluate
-k_true <- 10
+k_true <- 15
 
 # number of initial biclusters to set on SSLB/OGSSLB algorithms
-k_init <- 20
+k_init <- 30
 
 # mean of factor biclusters
 mean_factor_bic <- 2
@@ -185,9 +185,9 @@ execution_time <- system.time({
                                Y, 
                                t(X),
                                alpha = 1,
-                               n_iter_burnIn_ULA_SOUL = 25,
-                               n_iter_ULA_SOUL = 25,
-                               niter_graddesc_logreg = 25,
+                               n_iter_burnIn_ULA_SOUL = 150,
+                               n_iter_ULA_SOUL = 200,
+                               niter_graddesc_logreg = 100,
                                K_init = k_init
                              )
                            
