@@ -105,7 +105,7 @@ dis_out <- dis_out %>% relocate(HC, .after = last_col())
 
 # SSLB parameters
 k_init_sslb <- 50
-lambda0s <- c(1, 5, 10, 50, 100)
+lambda0s <- c(1, 5, 10, 50, 100, 500, 1e3, 1e4, 1e5, 1e6, 1e7)
 lambda0_tildes <- lambda0s
 
 # list of seeds for different initial conditions
@@ -210,7 +210,6 @@ for (i in seq_along(list_seeds)) {
     row_bic_dataset <- c(n_bic)
 
     for (dis in sort(unique(as.character(pheno_data$disease)))) {
-      # for (dis in unique(immunex_ut_phendb$disease)) {
       total_samples_disease <- sum(pheno_data$disease == dis)
       n_samples_disease <- sum((pheno_data %>%
                                   filter(disease == dis) %>%
@@ -242,7 +241,6 @@ for (i in seq_along(list_seeds)) {
     row_bic_dataset <- c(n_bic)
 
     for (dis in sort(unique(as.character(pheno_data$disease)))) {
-      # for (dis in unique(immunex_ut_phendb$disease)) {
       total_samples_disease <- sum(pheno_data$disease == dis)
       n_samples_disease <- sum((pheno_data %>%
                                   filter(disease == dis) %>%
@@ -355,7 +353,7 @@ results_perc_dis_ifn <- data.frame(
 # given a threshold of HC patients and
 # number of inf signature genes
 for (i in seq_along(list_seeds)) {
-  # get biclusters in which there's less than 30% of HC patients
+  # get biclusters in which there's less than 50% of total number of samples
   filtered_biclusters_sslb <- list_dataset_disease_sslb[[i]] %>%
     filter(samples < 0.5 * ncol(count_data_corrected)) %>%
     select(-c(genes, samples))
@@ -364,7 +362,7 @@ for (i in seq_along(list_seeds)) {
     filter(samples < 0.5 * ncol(count_data_corrected)) %>%
     select(-c(genes, samples))
 
-  # Adjust the bicluster numbers to match the format in sslb_n_genes_sig_ifn
+  # Adjust the bicluster index to match the format in sslb_n_genes_sig_ifn
   if (nrow(filtered_biclusters_sslb) > 0) {
     filtered_biclusters_sslb$adjusted_bicluster <- paste(
       "bicluster",
@@ -442,7 +440,7 @@ results_perc_dis_long <- results_perc_dis_ifn %>%
   )
 
 # Percentage of patients in biclusters that meet sparsity condition
-ggplot(results_long, aes(x = patient_type, fill = method, y = percentage)) +
+ggplot(results_perc_dis_long, aes(x = patient_type, fill = method, y = percentage)) +
   geom_boxplot(outlier.shape = 8, outlier.size = 1) +
   labs(fill = "Method", y = "Percentage of patients in biclusters") +
   scale_y_continuous(labels = scales::percent) +
